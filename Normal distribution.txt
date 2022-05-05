@@ -1,0 +1,15 @@
+2 uniform distribution generate 1 normal distribution in C code:
+
+In matlab:
+	randn(1,N)
+
+In C:
+//U,V 2 uniform distribution
+
+U = rand() / (RAND_MAX + 1.0);
+V = rand() / (RAND_MAX + 1.0);
+
+//X=R*cos( Theta ) or R*sin( Theta )
+//Theta=2*PI*V 
+
+X = sqrt(-2.0 * log(U))* sin(2.0 * 3.1415926 * V);
