@@ -37,9 +37,9 @@ for(a=0;a<n-1;a++)
 	h/=2;
 }
 //output
-printf("Input¡G\n");
+printf("Input:\n");
 for(a=0;a<N;a++)printf("%d ",A[a][0]);
-printf("\nOutput¡G\n");
+printf("\nOutput:\n");
 for(a=0;a<N;a++)printf("%d ",A[a][n-1]);
 
 return 0;
