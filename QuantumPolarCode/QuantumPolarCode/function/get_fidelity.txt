@@ -1,0 +1,7 @@
+function[Fidelity]=get_fidelity(state0,state1)
+    A=diag(state0);
+    B=diag(state1);
+    C=A*B';
+    Fidelity=sqrt(C);
+    Fidelity=trace(Fidelity)^2;
+end

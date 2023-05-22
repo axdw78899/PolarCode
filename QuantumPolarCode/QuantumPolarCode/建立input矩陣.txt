@@ -1,0 +1,27 @@
+num=32;        %16 32 64 ...
+x=eye(num);
+z=num;
+
+%C2
+
+n=1;
+for k=(num-1):-1:1
+    for i=1:k
+        x(z+i,:)=x(n,:)+x(i+n,:);
+    end
+    z=z+k;%目前的index
+    n=n+1;
+end
+for n=2:(num-1)
+nn=n;
+for k=(num-1):-1:(nn-1)
+    for i=1:k
+        x(z+i,:)=x(((nn-1)*(2*num-nn)/2)+n,:)+x(i+n,:);
+    end
+    z=z+k-nn+1;
+    n=n+1;
+end
+end
+
+x=[zeros([1 num]);x(1:z,:)];
+T=x;

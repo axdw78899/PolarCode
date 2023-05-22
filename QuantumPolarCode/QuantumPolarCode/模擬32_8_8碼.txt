@@ -1,0 +1,99 @@
+error_rate2=[0.003 0.005 0.007 0.01 0.02 0.03 0.04 0.05];
+TCx=mod(MZ*T',2);
+TCx=[TCx(1:7,:);TCx(9:10,:);TCx(15,:);TCx(17:19,:);TCx(26:27,:);TCx(29,:)];
+TCz=mod(MX*T',2);
+TCz=[TCz(4,:);TCz(6:7,:);TCz(14:16,:);TCz(18,:);TCz(23:24,:);TCz(26:32,:)];
+for er=1:8
+AAns=0;
+BAns=0;
+CAns=0;
+DAns=0;
+EAns=0;
+FAns=0;
+GAns=0;
+HAns=0;
+error_rate=error_rate2(er);
+RN=100000;%跑的次數_要大於10^7
+for num=1:RN
+
+error_rate_X=2*error_rate/3;
+error_rate_Z=2*error_rate/3;
+ex=floor(rand(1,32) / (1-error_rate_X));
+ez=floor(rand(1,32) / (1-error_rate_Z));
+cx=1;
+cz=1;
+sx=mod(MZ*ex',2)';
+ssx=[sx(1:7) sx(9:10)  sx(15) sx(17:19) sx(26:27) sx(29)];
+
+sz=mod(MX*ez',2)';
+ssz=[sz(4) sz(6:7) sz(14:16) sz(18) sz(23:24) sz(26:32)];
+
+
+for i=1:5489 
+    if ssx'==TCx(:,i)
+        cx=i;
+        break
+    end
+end
+for i=1:5489 
+    if ssz'==TCz(:,i)
+        cz=i;
+        break
+    end
+end
+Corx=mod(T(cx,:)+ex,2);
+Corz=mod(T(cz,:)+ez,2);
+
+
+
+if (mod(Corx(1)+Corx(9)+Corx(17)+Corx(25),2)==0 & mod(Corz(25)+Corz(26)+Corz(27)+Corz(28)+Corz(29)+Corz(30)+Corz(31)+Corz(32),2)==0)
+    AAns=AAns+1;
+end
+if (mod(Corx(1)+Corx(5)+Corx(17)+Corx(21),2)==0 & mod(Corz(21)+Corz(22)+Corz(23)+Corz(24)+Corz(29)+Corz(30)+Corz(31)+Corz(32),2)==0)
+    BAns=BAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(17)+Corx(19),2)==0 & mod(Corz(19)+Corz(20)+Corz(23)+Corz(24)+Corz(27)+Corz(28)+Corz(31)+Corz(32),2)==0)
+    CAns=CAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(17)+Corx(18),2)==0 & mod(Corz(18)+Corz(20)+Corz(22)+Corz(24)+Corz(26)+Corz(28)+Corz(30)+Corz(32),2)==0)
+    DAns=DAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(5)+Corx(7)+Corx(9)+Corx(11)+Corx(13)+Corx(15),2)==0 & mod(Corz(15)+Corz(16)+Corz(31)+Corz(32),2)==0)
+    EAns=EAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(5)+Corx(6)+Corx(9)+Corx(10)+Corx(13)+Corx(14),2)==0 & mod(Corz(14)+Corz(16)+Corz(30)+Corz(32),2)==0)
+    FAns=FAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(3)+Corx(4)+Corx(9)+Corx(10)+Corx(11)+Corx(12),2)==0 & mod(Corz(12)+Corz(16)+Corz(28)+Corz(32),2)==0)
+    GAns=GAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(3)+Corx(4)+Corx(5)+Corx(6)+Corx(7)+Corx(8),2)==0 & mod(Corz(8)+Corz(16)+Corz(24)+Corz(32),2)==0)
+    HAns=HAns+1;
+end
+
+end
+
+
+
+AErrorRate=(RN-AAns)/RN;
+BErrorRate=(RN-BAns)/RN;
+CErrorRate=(RN-CAns)/RN;
+DErrorRate=(RN-DAns)/RN;
+EErrorRate=(RN-EAns)/RN;
+FErrorRate=(RN-FAns)/RN;
+GErrorRate=(RN-GAns)/RN;
+HErrorRate=(RN-HAns)/RN;
+ErrorRate=[AErrorRate BErrorRate CErrorRate DErrorRate EErrorRate FErrorRate GErrorRate HErrorRate ]
+error_rate_after=vpa(ErrorRate);
+X(1,er)=error_rate;
+X(2:9,er)=error_rate_after;
+end
+
+semilogy(X(1,:),X(1,:),'b--o',X(1,:),X(2,:),'-+',X(1,:),X(3,:),'-*',X(1,:),X(4,:), ...
+    '-.',X(1,:),X(5,:),'-x',X(1,:),X(6,:),'-s',X(1,:),X(7,:),'-d',X(1,:),X(8,:),'-^',X(1,:),X(9,:),'->')
+grid on
+xlabel('Channel ErrorRate');% x軸名稱
+ylabel('Qubit ErrorRate'); 
+title('[[32,8;8]] Quantum Polar code');  
+legend('Uncoded-ErrorRate','1-st Qubit','2-nd Qubit','3-rd Qubit','4-th Qubit','5-th Qubit','6-th Qubit','7-th Qubit','8-th Qubit','location','best','FontSize',13);  
+

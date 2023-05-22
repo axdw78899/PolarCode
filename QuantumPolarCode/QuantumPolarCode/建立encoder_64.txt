@@ -1,0 +1,14 @@
+clc;clear all;
+F=[1 1; 0 1];
+H=kron(kron(kron(kron(kron(F,F),F),F),F),F);%64
+H2=H';
+x=eye(64);
+VX=x*H;
+a=1:64;
+VVX=[VX(a(1:64),:)];
+MX=mod(VVX*H2,2);
+VZ=x*H2;
+VVZ=[VZ(a(1:64),:)];
+MZ=mod(VVZ*H,2);
+MX;
+MZ;

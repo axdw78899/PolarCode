@@ -1,0 +1,152 @@
+error_rate2=[0.003];%設定channel error rate 點
+TCx=mod(MZ*T',2);
+TCx=[TCx(1:13,:);TCx(17:19,:);TCx(21,:);TCx(25,:);TCx(28,:);TCx(30:31,:);TCx(33:35,:);TCx(37,:); ...
+    TCx(41,:);TCx(46:47,:);TCx(49,:);TCx(52,:);TCx(54,:);TCx(58,:)];
+TCz=mod(MX*T',2);
+TCz=[TCz(7,:);TCz(11,:);TCz(13,:);TCz(16,:);TCz(18:19,:);TCz(24,:);TCz(28,:);TCz(30:32,:);TCz(34:35,:);...
+    TCz(37,:);TCz(40,:);TCz(44,:);TCz(46:48,:);TCz(52:64,:)];
+
+for er=1:1 %幾個點跑幾次
+AAns=0;
+BAns=0;
+CAns=0;
+DAns=0;
+EAns=0;
+FAns=0;
+GAns=0;
+HAns=0;
+IAns=0;
+JAns=0;
+KAns=0;
+LAns=0;
+MAns=0;
+NAns=0;
+OAns=0;
+PAns=0;
+er%跑的時候檢查
+error_rate=error_rate2(er);
+RN=100000000;%跑的次數
+
+for num=1:RN
+%depolarizing channel
+error_rate_X=2*error_rate/3;
+error_rate_Z=2*error_rate/3;
+ex=floor(rand(1,64) / (1-error_rate_X));
+ez=floor(rand(1,64) / (1-error_rate_Z));
+cx=1;
+cz=1;
+sx=mod(MZ*ex',2)';
+%根據coding scheme選
+ssx=[sx(1:13) sx(17:19) sx(21) sx(25) sx(28) sx(30:31) sx(33:35) sx(37)  ...
+    sx(41) sx(46:47) sx(49) sx(52) sx(54) sx(58)];
+
+sz=mod(MX*ez',2)';
+%根據coding scheme選
+ssz=[sz(7) sz(11) sz(13) sz(16) sz(18:19) sz(24) sz(28) sz(30:32) sz(34:35) ...
+    sz(37) sz(40) sz(44) sz(46:48) sz(52:64)];
+
+
+for i=1:43745
+    if ssx'==TCx(:,i)
+        cx=i;
+        break
+    end
+end
+
+for i=1:43745
+    if ssz'==TCz(:,i)
+        cz=i;
+        break
+    end
+end
+Corx=mod(T(cx,:)+ex,2);
+Corz=mod(T(cz,:)+ez,2);
+%根據coding scheme選
+if (mod(Corx(1)+Corx(3)+Corx(17)+Corx(19)+Corx(33)+Corx(35)+Corx(49)+Corx(51),2)==0 & mod(Corz(51)+Corz(52)+Corz(55)+Corz(56)+Corz(59)+Corz(60)+Corz(63)+Corz(64),2)==0)
+    AAns=AAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(17)+Corx(18)+Corx(33)+Corx(34)+Corx(49)+Corx(50),2)==0 & mod(Corz(50)+Corz(52)+Corz(54)+Corz(56)+Corz(58)+Corz(60)+Corz(62)+Corz(64),2)==0)
+    BAns=BAns+1;
+end
+if (mod(Corx(1)+Corx(5)+Corx(9)+Corx(13)+Corx(33)+Corx(37)+Corx(41)+Corx(45),2)==0 & mod(Corz(45)+Corz(46)+Corz(47)+Corz(48)+Corz(61)+Corz(62)+Corz(63)+Corz(64),2)==0)
+    CAns=CAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(9)+Corx(11)+Corx(33)+Corx(35)+Corx(41)+Corx(43),2)==0 & mod(Corz(43)+Corz(44)+Corz(47)+Corz(48)+Corz(59)+Corz(60)+Corz(63)+Corz(64),2)==0)
+    DAns=DAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(9)+Corx(10)+Corx(33)+Corx(34)+Corx(41)+Corx(42),2)==0 & mod(Corz(42)+Corz(44)+Corz(46)+Corz(48)+Corz(58)+Corz(60)+Corz(62)+Corz(64),2)==0)
+    EAns=EAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(5)+Corx(7)+Corx(33)+Corx(35)+Corx(37)+Corx(39),2)==0 & mod(Corz(39)+Corz(40)+Corz(47)+Corz(48)+Corz(55)+Corz(56)+Corz(63)+Corz(64),2)==0)
+    FAns=FAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(5)+Corx(6)+Corx(33)+Corx(34)+Corx(37)+Corx(38),2)==0 & mod(Corz(38)+Corz(40)+Corz(46)+Corz(48)+Corz(54)+Corz(56)+Corz(62)+Corz(64),2)==0)
+    GAns=GAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(3)+Corx(4)+Corx(33)+Corx(34)+Corx(35)+Corx(36),2)==0 & mod(Corz(36)+Corz(40)+Corz(44)+Corz(48)+Corz(52)+Corz(56)+Corz(60)+Corz(64),2)==0)
+    HAns=HAns+1;
+end
+if (mod(Corx(1)+Corx(5)+Corx(9)+Corx(13)+Corx(17)+Corx(21)+Corx(25)+Corx(29),2)==0 & mod(Corz(29)+Corz(30)+Corz(31)+Corz(31)+Corz(61)+Corz(62)+Corz(63)+Corz(64),2)==0)
+    IAns=IAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(9)+Corx(11)+Corx(17)+Corx(19)+Corx(25)+Corx(27),2)==0 & mod(Corz(27)+Corz(28)+Corz(31)+Corz(32)+Corz(59)+Corz(60)+Corz(63)+Corz(64),2)==0)
+    JAns=JAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(9)+Corx(10)+Corx(17)+Corx(18)+Corx(25)+Corx(26),2)==0 & mod(Corz(26)+Corz(28)+Corz(30)+Corz(32)+Corz(58)+Corz(60)+Corz(62)+Corz(64),2)==0)
+    KAns=KAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(5)+Corx(7)+Corx(17)+Corx(19)+Corx(21)+Corx(23),2)==0 & mod(Corz(23)+Corz(24)+Corz(31)+Corz(32)+Corz(55)+Corz(56)+Corz(63)+Corz(64),2)==0)
+    LAns=LAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(5)+Corx(6)+Corx(17)+Corx(18)+Corx(21)+Corx(22),2)==0 & mod(Corz(22)+Corz(24)+Corz(30)+Corz(32)+Corz(54)+Corz(56)+Corz(62)+Corz(64),2)==0)
+    MAns=MAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(3)+Corx(4)+Corx(17)+Corx(18)+Corx(19)+Corx(20),2)==0 & mod(Corz(20)+Corz(24)+Corz(28)+Corz(32)+Corz(52)+Corz(56)+Corz(60)+Corz(64),2)==0)
+    NAns=NAns+1;
+end
+if (mod(Corx(1)+Corx(3)+Corx(5)+Corx(7)+Corx(9)+Corx(11)+Corx(13)+Corx(15),2)==0 & mod(Corz(15)+Corz(16)+Corz(31)+Corz(32)+Corz(47)+Corz(48)+Corz(63)+Corz(64),2)==0)
+    OAns=OAns+1;
+end
+if (mod(Corx(1)+Corx(2)+Corx(5)+Corx(6)+Corx(9)+Corx(10)+Corx(13)+Corx(14),2)==0 & mod(Corz(14)+Corz(16)+Corz(30)+Corz(32)+Corz(46)+Corz(48)+Corz(62)+Corz(64),2)==0)
+    PAns=PAns+1;
+end
+
+end
+
+
+
+AErrorRate=(RN-AAns)/RN;
+BErrorRate=(RN-BAns)/RN;
+CErrorRate=(RN-CAns)/RN;
+DErrorRate=(RN-DAns)/RN;
+EErrorRate=(RN-EAns)/RN;
+FErrorRate=(RN-FAns)/RN;
+GErrorRate=(RN-GAns)/RN;
+HErrorRate=(RN-HAns)/RN;
+
+IErrorRate=(RN-IAns)/RN;
+JErrorRate=(RN-JAns)/RN;
+KErrorRate=(RN-KAns)/RN;
+LErrorRate=(RN-LAns)/RN;
+MErrorRate=(RN-MAns)/RN;
+NErrorRate=(RN-NAns)/RN;
+OErrorRate=(RN-OAns)/RN;
+PErrorRate=(RN-PAns)/RN;
+
+ErrorRate=[AErrorRate BErrorRate CErrorRate DErrorRate EErrorRate FErrorRate GErrorRate HErrorRate ...
+    IErrorRate JErrorRate KErrorRate LErrorRate MErrorRate NErrorRate OErrorRate PErrorRate];
+error_rate_after=vpa(ErrorRate);
+X(1,er)=error_rate;
+X(2:17,er)=error_rate_after;
+X
+end
+
+semilogy(X(1,:),X(1,:),'b--o',X(1,:),X(2,:),'-+',X(1,:),X(3,:),'-*',X(1,:),X(4,:), ...
+    '-.',X(1,:),X(5,:),'-x',X(1,:),X(6,:),'-s',X(1,:),X(7,:),'-d',X(1,:),X(8,:),'-^',X(1,:),X(9,:),'->', ...
+    X(1,:),X(10,:),X(1,:),X(11,:),X(1,:),X(12,:),X(1,:),X(13,:),X(1,:),X(14,:),X(1,:),X(15,:),X(1,:),X(16,:),X(1,:),X(17,:))
+grid on
+xlabel('Channel ErrorRate');% x軸名稱
+ylabel('Qubit ErrorRate'); 
+title('[[64,16;16]] Quantum Polar code');  
+legend('Uncoded-ErrorRate','1-st Qubit','2-nd Qubit','3-rd Qubit','4-th Qubit','5-th Qubit','6-th Qubit','7-th Qubit','8-th Qubit','location','best','FontSize',13);  
+

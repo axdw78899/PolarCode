@@ -1,0 +1,19 @@
+clc;clear all;
+F=[1 1; 0 1];
+H=kron(kron(kron(F,F),F),F);
+H2=H';
+x=eye(16);
+VX=x*H;
+a=[1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16];
+VVX=[VX(a(1:16),:)];
+MX=mod(VVX*H2,2);
+SUM_X=[sum(MX(1,:));sum(MX(2,:));sum(MX(3,:));sum(MX(4,:));sum(MX(5,:));sum(MX(6,:));sum(MX(7,:));sum(MX(8,:));sum(MX(9,:));sum(MX(10,:)); ...
+    sum(MX(11,:));sum(MX(12,:));sum(MX(13,:));sum(MX(14,:));sum(MX(15,:));sum(MX(16,:));];
+
+VZ=x*H2;
+VVZ=[VZ(a(1:16),:)];
+MZ=mod(VVZ*H,2);
+SUM_Z=[sum(MZ(1,:));sum(MZ(2,:));sum(MZ(3,:));sum(MZ(4,:));sum(MZ(5,:));sum(MZ(6,:));sum(MZ(7,:));sum(MZ(8,:));sum(MZ(9,:));sum(MZ(10,:)); ...
+    sum(MZ(11,:));sum(MZ(12,:));sum(MZ(13,:));sum(MZ(14,:));sum(MZ(15,:));sum(MZ(16,:));];
+
+

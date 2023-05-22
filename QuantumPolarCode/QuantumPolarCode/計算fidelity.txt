@@ -1,0 +1,111 @@
+clc;
+clear all;
+
+Id = [1 0; 0 1];
+ket0 = [1; 0];
+ket1 = [0; 1];
+Qubit_number=8;
+
+Q1=single([0.9747 0.2236]);
+Q2=single([0.2236  0.9747]);
+
+
+Q1=Q1'*Q1;
+Q2=Q2'*Q2;
+
+state1=Q1;
+state2=Q2;
+
+state3=Q1;
+state4=Q2;
+
+state5=Q1;
+state6=Q2;
+
+state7=Q1;
+state8=Q2;
+
+state9=Q1;
+state10=Q2;
+
+state11=Q1;
+state12=Q2;
+
+state13=Q1;
+state14=Q2;
+
+state15=Q1;
+state16=Q2;
+
+
+[rho_1_1_P_0,rho_1_1_P_1,rho_1_1_N_0,rho_1_1_N_1]=Quantum_polar(state1,state2,state3,state4);
+[rho_1_2_P_0,rho_1_2_P_1,rho_1_2_N_0,rho_1_2_N_1]=Quantum_polar(state5,state6,state7,state8);
+[rho_1_3_P_0,rho_1_3_P_1,rho_1_3_N_0,rho_1_3_N_1]=Quantum_polar(state9,state10,state11,state12);
+[rho_1_4_P_0,rho_1_4_P_1,rho_1_4_N_0,rho_1_4_N_1]=Quantum_polar(state13,state14,state15,state16);
+
+
+
+
+%*************************************
+%第二層polar
+[rho_2_1_P_0,rho_2_1_P_1,rho_2_1_N_0,rho_2_1_N_1]=Quantum_polar(rho_1_1_P_0,rho_1_1_P_1,rho_1_2_P_0,rho_1_2_P_1);
+F_2_1=get_fidelity(rho_2_1_P_0,rho_2_1_P_1);
+F_2_2=get_fidelity(rho_2_1_N_0,rho_2_1_N_1);
+
+[rho_2_2_P_0,rho_2_2_P_1,rho_2_2_N_0,rho_2_2_N_1]=Quantum_polar(rho_1_1_N_0,rho_1_1_N_1,rho_1_2_N_0,rho_1_2_N_1);
+F_2_3=get_fidelity(rho_2_2_P_0,rho_2_2_P_1);
+F_2_4=get_fidelity(rho_2_2_N_0,rho_2_2_N_1);
+
+[rho_2_3_P_0,rho_2_3_P_1,rho_2_3_N_0,rho_2_3_N_1]=Quantum_polar(rho_1_3_P_0,rho_1_3_P_1,rho_1_4_P_0,rho_1_4_P_1);
+F_2_5=get_fidelity(rho_2_3_P_0,rho_2_3_P_1);
+F_2_6=get_fidelity(rho_2_3_N_0,rho_2_3_N_1);
+
+[rho_2_4_P_0,rho_2_4_P_1,rho_2_4_N_0,rho_2_4_N_1]=Quantum_polar(rho_1_3_N_0,rho_1_3_N_1,rho_1_4_N_0,rho_1_4_N_1);
+F_2_7=get_fidelity(rho_2_4_P_0,rho_2_4_P_1);
+F_2_8=get_fidelity(rho_2_4_N_0,rho_2_4_N_1);
+%Layer 3
+[rho_3_1_P_0,rho_3_1_P_1,rho_3_1_N_0,rho_3_1_N_1]=Quantum_polar(rho_2_1_P_0,rho_2_1_P_1,rho_2_3_P_0,rho_2_3_P_1);
+[rho_3_2_P_0,rho_3_2_P_1,rho_3_2_N_0,rho_3_2_N_1]=Quantum_polar(rho_2_2_P_0,rho_2_2_P_1,rho_2_4_P_0,rho_2_4_P_1);
+
+[rho_3_3_P_0,rho_3_3_P_1,rho_3_3_N_0,rho_3_3_N_1]=Quantum_polar(rho_2_1_N_0,rho_2_1_N_1,rho_2_3_N_0,rho_2_3_N_1);
+[rho_3_4_P_0,rho_3_4_P_1,rho_3_4_N_0,rho_3_4_N_1]=Quantum_polar(rho_2_2_N_0,rho_2_2_N_1,rho_2_4_N_0,rho_2_4_N_1);
+
+
+F_3_1=get_fidelity(rho_3_1_P_0,rho_3_1_P_1);
+F_3_2=get_fidelity(rho_3_1_N_0,rho_3_1_N_1);
+F_3_3=get_fidelity(rho_3_2_P_0,rho_3_2_P_1);
+F_3_4=get_fidelity(rho_3_2_N_0,rho_3_2_N_1);
+
+F_3_5=get_fidelity(rho_3_3_P_0,rho_3_3_P_1);
+F_3_6=get_fidelity(rho_3_3_N_0,rho_3_3_N_1);
+F_3_7=get_fidelity(rho_3_4_P_0,rho_3_4_P_1);
+F_3_8=get_fidelity(rho_3_4_N_0,rho_3_4_N_1);
+
+
+F_0=get_fidelity(Q1,Q2)
+
+F_1_1=get_fidelity(rho_1_1_P_0,rho_1_1_P_1);
+F_1_2=get_fidelity(rho_1_1_N_0,rho_1_1_N_1);
+F_1=[F_1_1 F_1_2]
+F_2=[F_2_1 ;F_2_2 ;F_2_3 ;F_2_4]'
+F_3=[F_3_1 ;F_3_2 ;F_3_3 ;F_3_4 ;F_3_5;F_3_6 ;F_3_7 ;F_3_8]'
+A=F_3;
+B=diag(A'*A);
+C=2*sqrt(A)-A;
+C=diag(C'*C);
+F_3;
+F_4=[B(1) C(1) B(2) C(2) B(3) C(3) B(4) C(4) ...
+    B(5) C(5) B(6) C(6) B(7) C(7) B(8) C(8) ]
+A=F_4;
+B=diag(A'*A);
+C=2*sqrt(A)-A;
+C=diag(C'*C);
+
+F_5=[B(1) C(1) B(2) C(2) B(3) C(3) B(4) C(4) ...
+    B(5) C(5) B(6) C(6) B(7) C(7) B(8) C(8) ...
+    B(9) C(9) B(10) C(10) B(11) C(11) B(12) C(12) ...
+    B(13) C(13) B(14) C(14) B(15) C(15) B(16) C(16)]
+
+plot(F_5,'-b*');
+xlabel('The number of split channel, i=');% x軸名稱
+ylabel('Fidelity'); 

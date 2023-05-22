@@ -1,0 +1,8 @@
+function[A,B,C,D]=Quantum_polar(state1,state2,state3,state4)
+    ket0 = [1; 0];
+    ket1 = [0; 1];
+    C=0.5*kron(state1,state3)+0.5*kron(state2,state4);
+    D=0.5*kron(state2,state3)+0.5*kron(state1,state4);
+    A=kron((0.5*kron(ket0*ket0',state1)+0.5*kron(ket1*ket1',state2)),state3);
+    B=kron((0.5*kron(ket0*ket0',state2)+0.5*kron(ket1*ket1',state1)),state4);
+end
